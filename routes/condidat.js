@@ -4,6 +4,7 @@ const route = express.Router();
 const condidatControllers = require("../controllers/condidat");
 
 const { check } = require("express-validator");
+const fileUpload = require("../middleware/file-uploads");
 
 route.post(
   "/signup",
@@ -25,14 +26,14 @@ route.get("/:id", condidatControllers.getCondidatById);
 
 route.patch(
   "/:id",
-  check("name").not().isEmpty(),
-  check("sexe").not().isEmpty(),
-  check("age").not().isEmpty(),
-  check("photo").not().isEmpty(),
-  check("etatcivil").not().isEmpty(),
-  check("dateNaissance").not().isEmpty(),
-  check("email").normalizeEmail(),
-  check("password").isLength({ min: 8 }),
+  fileUpload.single("image"),
+  [
+    check("name").not().isEmpty(),
+    check("sexe").not().isEmpty(),
+    check("age").not().isEmpty(),
+    check("dateNaissance").not().isEmpty(),
+    check("email").normalizeEmail(),
+  ],
   condidatControllers.updateCondidat
 );
 

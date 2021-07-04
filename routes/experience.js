@@ -55,6 +55,7 @@ check('description')
 
 route.delete('/:id',experienceControllers.deleteExperience)
 
+route.get('/codidat/:id',experienceControllers.getExperienceByCondidatId)
 
 
 

@@ -8,4 +8,4 @@ const competanceSchema = new schema({
 })
 
 
-module.exports = mongoose.model('',competanceSchema)
+module.exports = mongoose.model('competence',competanceSchema)

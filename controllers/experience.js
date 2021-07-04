@@ -89,8 +89,7 @@ const updateExperience = async (req, res, next) => {
     ville,
     Ddebut,
     Dfin,
-    description,
-    condidatId,
+    description
   } = req.body;
 
   const id = req.params.id;
@@ -141,8 +140,36 @@ const deleteExperience = async (req, res, next) => {
   res.status(200).json({ message: "deleted" });
 };
 
+const getExperienceByCondidatId = async (req, res, next) => {
+  const id = req.params.id;
+
+  let existingexperience;
+  try {
+    existingexperience = await condidat.findById(id).populate("experiences");
+  } catch (err) {
+    const error = new httpError(
+      "Fetching project failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!existingexperience || existingexperience.experiences.length === 0) {
+    return next(
+      new httpError("Could not find  for the provided user id.", 404)
+    );
+  }
+
+  res.json({
+    experiences: existingexperience.experiences.map((el) =>
+      el.toObject({ getters: true })
+    ),
+  });
+};
+
 exports.ajoutExperience = ajoutExperience;
 exports.getExperienceById = getExperienceById;
 exports.updateExperience = updateExperience;
 exports.deleteExperience = deleteExperience;
 exports.getExperience = getExperience;
+exports.getExperienceByCondidatId = getExperienceByCondidatId

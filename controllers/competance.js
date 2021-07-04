@@ -122,8 +122,36 @@ const deleteCompetance = async (req, res, next) => {
   res.status(200).json({ message: "deleted" });
 };
 
+const getCompetenceByCondidatId = async (req, res, next) => {
+  const id = req.params.id;
+
+  let existingcompetance;
+  try {
+    existingcompetance = await condidat.findById(id).populate("competences");
+  } catch (err) {
+    const error = new httpError(
+      "Fetching competence failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!existingcompetance || existingcompetance.competences.length === 0) {
+    return next(
+      new httpError("Could not find  for the provided user id.", 404)
+    );
+  }
+
+  res.json({
+    competences: existingcompetance.competences.map((el) =>
+      el.toObject({ getters: true })
+    ),
+  });
+};
+
 exports.ajoutCompetance = ajoutCompetance;
 exports.getCompetanceById = getCompetanceById;
 exports.updateCompetance = updateCompetance;
 exports.deleteCompetance = deleteCompetance;
 exports.getCompetance = getCompetance;
+exports.getCompetenceByCondidatId = getCompetenceByCondidatId

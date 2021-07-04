@@ -148,7 +148,7 @@ const getOffreByUserId = async (req, res, next) => {
   try {
     existingOffre = await entreprise.findById(id).populate('offres');
   } catch (err) {
-    const error = new HttpError(
+    const error = new httpError(
       'Fetching failed !!!',
       500
     );
@@ -158,7 +158,7 @@ const getOffreByUserId = async (req, res, next) => {
   // if (!places || places.length === 0) {
   if (!existingOffre || existingOffre.offres.length === 0) {
     return next(
-      new HttpError('Could not find offre for the provided user id.', 404)
+      new httpError('Could not find offre for the provided user id.', 404)
     );
   }
 
@@ -169,9 +169,38 @@ const getOffreByUserId = async (req, res, next) => {
   });
 };
 
+const getAllOffreByUserId = async (req, res, next) => {
+  const id = req.params.id;
+
+  let existingOffre;
+  try {
+    existingOffre = await entreprise.find().populate('offres');
+  } catch (err) {
+    const error = new httpError(
+      'Fetching failed !!!',
+      500
+    );
+    return next(error);
+  }
+
+  if (!existingOffre || existingOffre.offres.length === 0) {
+    return next(
+      new httpError('Could not find offre for the provided user id.', 404)
+    );
+  }
+
+  res.json({
+    offre: existingOffre.offres.map(item =>
+      item.toObject({ getters: true }),
+      existingOffre.image
+    ),image:existingOffre.image
+  });
+};
+
 exports.ajoutOffre = ajoutOffre;
 exports.getOffreById = getOffreById;
 exports.updateOffre = updateOffre;
 exports.deleteOffre = deleteOffre;
 exports.getOffre = getOffre;
 exports.getOffreByUserId = getOffreByUserId
+exports.getAllOffreByUserId = getAllOffreByUserId

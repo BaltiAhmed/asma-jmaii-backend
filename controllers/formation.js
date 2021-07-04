@@ -34,15 +34,13 @@ const ajoutFormation = async (req, res, next) => {
     existingCondidat = await condidat.findById(condidatId);
   } catch {
     const error = new httpError("problem", 500);
-    return next(error);v83udrq5v83udrq5yysdfx
+    return next(error);
   }
-  console.log(createdFormation);
-  console.log(existingCondidat);
 
   try {
-    await createdFormation.save();
+    createdFormation.save();
     existingCondidat.formations.push(createdFormation);
-    await existingCondidat.save();
+    existingCondidat.save();
   } catch (err) {
     const error = new httpError("failed !!!!!!", 500);
     return next(error);
@@ -89,7 +87,6 @@ const updateFormation = async (req, res, next) => {
     A_debut,
     A_fin,
     description,
-    condidatId,
   } = req.body;
 
   const id = req.params.id;
@@ -140,8 +137,36 @@ const deleteFormation = async (req, res, next) => {
   res.status(200).json({ message: "deleted" });
 };
 
+const getFormationByCondidatId = async (req, res, next) => {
+  const id = req.params.id;
+
+  let existingformation;
+  try {
+    existingformation = await condidat.findById(id).populate("formations");
+  } catch (err) {
+    const error = new httpError(
+      "Fetching project failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!existingformation || existingformation.formations.length === 0) {
+    return next(
+      new httpError("Could not find  for the provided user id.", 404)
+    );
+  }
+
+  res.json({
+    formation: existingformation.formations.map((el) =>
+      el.toObject({ getters: true })
+    ),
+  });
+};
+
 exports.ajoutFormation = ajoutFormation;
 exports.getFormationById = getFormationById;
 exports.updateFormation = updateFormation;
 exports.deleteFormation = deleteFormation;
 exports.getFormation = getFormation;
+exports.getFormationByCondidatId = getFormationByCondidatId

@@ -14,7 +14,7 @@ let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL || 'darragino1@gmail.com', // TODO: your gmail account
-        pass: process.env.PASSWORD || 'tarajidawla1919' // TODO: your gmail password
+        pass: process.env.PASSWORD || '' // TODO: your gmail password
     }
 });
 
@@ -128,7 +128,7 @@ const login = async (req, res, next) => {
 const getCondidat = async (req, res, next) => {
   let existingUser;
   try {
-    existingUser = await condidat.find({}, "-password");
+    existingUser = await condidat.find();
   } catch {
     const error = new httpError("failed signup try again later", 500);
     return next(error);
@@ -154,7 +154,7 @@ const updateCondidat = async (req, res, next) => {
     return next(new httpError("invalid input passed ", 422));
   }
 
-  const { name, etatcivil, dateNaissance, sexe, age, photo, email, password } =
+  const { name, dateNaissance, sexe, age, email } =
     req.body;
   const id = req.params.id;
   let existingUser;
@@ -166,13 +166,11 @@ const updateCondidat = async (req, res, next) => {
   }
 
   existingUser.name = name;
-  existingUser.etatcivil = etatcivil;
   existingUser.dateNaissance = dateNaissance;
   existingUser.sexe = sexe;
   existingUser.age = age;
-  existingUser.photo = photo;
+  existingUser.photo = req.file.path;
   existingUser.email = email;
-  existingUser.password = password;
 
   try {
     existingUser.save();

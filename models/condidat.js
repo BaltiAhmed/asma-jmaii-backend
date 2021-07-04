@@ -4,7 +4,6 @@ const schema = mongoose.Schema;
 
 const condidatSchema = new schema({
   name: { type: String, required: true },
-  etatcivil: { type: String },
   dateNaissance: { type: String },
   sexe: { type: String },
   age: { type: String },

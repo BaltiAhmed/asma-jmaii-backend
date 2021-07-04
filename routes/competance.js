@@ -31,6 +31,9 @@ check('niveau')
 
 route.delete('/:id',competanceControllers.deleteCompetance)
 
+route.get('/codidat/:id',competanceControllers.getCompetenceByCondidatId)
+
+
 
 
 
