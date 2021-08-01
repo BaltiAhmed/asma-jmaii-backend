@@ -19,6 +19,9 @@ const condidatSchema = new schema({
   experiences: [
     { type: mongoose.Types.ObjectId, required: true, ref: "experience" },
   ],
+  offres: [
+    { type: mongoose.Types.ObjectId, required: true, ref: "offre" },
+  ]
 });
 
 condidatSchema.plugin(uniqueValidator);

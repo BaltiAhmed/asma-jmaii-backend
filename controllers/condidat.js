@@ -7,18 +7,16 @@ const generator = require("generate-password");
 
 const jwt = require("jsonwebtoken");
 const offre = require("../models/offre");
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
 const log = console.log;
 let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL || 'darragino1@gmail.com', // TODO: your gmail account
-        pass: process.env.PASSWORD || '' // TODO: your gmail password
-    }
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL || "darragino1@gmail.com", // TODO: your gmail account
+    pass: process.env.PASSWORD || "tarajidawla1919", // TODO: your gmail password
+  },
 });
-
-
 
 const signup = async (req, res, next) => {
   const error = validationResult(req);
@@ -60,20 +58,19 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
-
   let mailOptions = {
-    from: 'asmajamai1994@gmail.com', // TODO: email sender
+    from: "asmajamai1994@gmail.com", // TODO: email sender
     to: email, // TODO: email receiver
-    subject: 'Confirmation de creation de compte',
-    text: 'Votre mot de passe est '+password
-};
+    subject: "Confirmation de creation de compte",
+    text: "Votre mot de passe est " + password,
+  };
 
-transporter.sendMail(mailOptions, (err, data) => {
+  transporter.sendMail(mailOptions, (err, data) => {
     if (err) {
-        return log('Error occurs');
+      return log("Error occurs");
     }
-    return log('Email sent!!!');
-});
+    return log("Email sent!!!");
+  });
 
   let token;
   try {
@@ -154,8 +151,7 @@ const updateCondidat = async (req, res, next) => {
     return next(new httpError("invalid input passed ", 422));
   }
 
-  const { name, dateNaissance, sexe, age, email } =
-    req.body;
+  const { name, dateNaissance, sexe, age, email } = req.body;
   const id = req.params.id;
   let existingUser;
   try {
@@ -183,7 +179,7 @@ const updateCondidat = async (req, res, next) => {
 };
 
 const deletecondidat = async (req, res, next) => {
-  const id = req.body.id;
+  const id = req.params.id;
   console.log(id);
 
   let existingUser;
@@ -234,6 +230,50 @@ const getCondidatByOffreId = async (req, res, next) => {
   });
 };
 
+const postulerOffre = async (req, res, next) => {
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return next(new httpError("invalid input passed ", 422));
+  }
+
+  const { idCondidat, idOffre } = req.body;
+
+  let existingOffre;
+  try {
+    existingOffre = await offre.findById(idOffre);
+  } catch {
+    const error = new httpError("problem", 500);
+    return next(error);
+  }
+
+  let existingCondidat;
+  try {
+    existingCondidat = await condidat.findById(idCondidat);
+  } catch {
+    const error = new httpError("problem", 500);
+    return next(error);
+  }
+
+  for (i = 0; i <= existingCondidat.offres.length; i++) {
+    if (existingCondidat.offres[i] == idOffre) {
+      const error = new httpError("Vous avez dejà postuler à cet offre", 500);
+      return next(error);
+    }
+  }
+
+  try {
+    existingCondidat.offres.push(existingOffre);
+    await existingCondidat.save();
+  } catch (err) {
+    const error = new httpError("failed !!!!!!", 500);
+    return next(error);
+  }
+
+  res.status(201).json({
+    existingCondidat: existingCondidat,
+  });
+};
+
 exports.signup = signup;
 exports.login = login;
 exports.getCondidat = getCondidat;
@@ -241,3 +281,4 @@ exports.getCondidatById = getCondidatById;
 exports.updateCondidat = updateCondidat;
 exports.deletecondidat = deletecondidat;
 exports.getCondidatByOffreId = getCondidatByOffreId;
+exports.postulerOffre = postulerOffre
