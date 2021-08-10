@@ -264,6 +264,8 @@ const postulerOffre = async (req, res, next) => {
   try {
     existingCondidat.offres.push(existingOffre);
     await existingCondidat.save();
+    existingOffre.condidats.push(existingCondidat);
+    await existingOffre.save();
   } catch (err) {
     const error = new httpError("failed !!!!!!", 500);
     return next(error);
@@ -281,4 +283,4 @@ exports.getCondidatById = getCondidatById;
 exports.updateCondidat = updateCondidat;
 exports.deletecondidat = deletecondidat;
 exports.getCondidatByOffreId = getCondidatByOffreId;
-exports.postulerOffre = postulerOffre
+exports.postulerOffre = postulerOffre;

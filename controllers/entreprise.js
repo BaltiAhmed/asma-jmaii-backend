@@ -106,7 +106,7 @@ const login = async (req, res, next) => {
 const getEntreprise = async (req, res, next) => {
   let existingUser;
   try {
-    existingUser = await entreprise.find({}, "-password");
+    existingUser = await entreprise.find();
   } catch {
     const error = new httpError("failed signup try again later", 500);
     return next(error);
