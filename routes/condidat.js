@@ -41,6 +41,7 @@ route.delete("/:id", condidatControllers.deletecondidat);
 
 route.get("/offre/:id", condidatControllers.getCondidatByOffreId);
 
-route.post("/postuler",condidatControllers.postulerOffre)
+route.post("/postuler", condidatControllers.postulerOffre);
+route.post("/convocation/:id", condidatControllers.convocationEntretient);
 
 module.exports = route;

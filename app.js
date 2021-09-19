@@ -11,6 +11,7 @@ const offreRoute = require("./routes/offre");
 const formationRoute = require("./routes/formation");
 const competanceRoute = require("./routes/competance");
 const experienceRoute = require("./routes/experience");
+const adminRoute = require("./routes/admin");
 
 
 
@@ -40,6 +41,7 @@ app.use("/api/offre", offreRoute);
 app.use("/api/formation", formationRoute);
 app.use("/api/competance", competanceRoute);
 app.use("/api/experience", experienceRoute);
+app.use("/api/admin", adminRoute);
 
 
 

@@ -8,6 +8,7 @@ const generator = require("generate-password");
 const jwt = require("jsonwebtoken");
 const offre = require("../models/offre");
 const nodemailer = require("nodemailer");
+const entreprise = require("../models/entreprise");
 
 const log = console.log;
 let transporter = nodemailer.createTransport({
@@ -276,6 +277,55 @@ const postulerOffre = async (req, res, next) => {
   });
 };
 
+const convocationEntretient = async (req, res, next) => {
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return next(new httpError("invalid input passed ", 422));
+  }
+  const { date, entrepriseId } = req.body;
+  const id = req.params.id;
+
+  let existingUser;
+  try {
+    existingUser = await condidat.findById(id);
+  } catch {
+    const error = new httpError("problem", 500);
+    return next(error);
+  }
+
+  let existingEntreprise;
+  try {
+    existingEntreprise = await entreprise.findById(entrepriseId);
+  } catch {
+    const error = new httpError("problem", 500);
+    return next(error);
+  }
+
+  console.log(date);
+  console.log(existingUser.email);
+  console.log(existingEntreprise.nom_entreprise);
+
+  let mailOptions = {
+    from: "asmajamai1994@gmail.com", // TODO: email sender
+    to: existingUser.email, // TODO: email receiver
+    subject: "Convocation pour entretient",
+    text:
+      "La societe" +
+      existingEntreprise.nom_entreprise +
+      " vous invite a passer un entretient le  " +
+      date,
+  };
+
+  transporter.sendMail(mailOptions, (err, data) => {
+    if (err) {
+      return log("Error occurs");
+    }
+    return log("Email sent!!!");
+  });
+
+  res.status(200).json({ Condidat: existingUser });
+};
+
 exports.signup = signup;
 exports.login = login;
 exports.getCondidat = getCondidat;
@@ -284,3 +334,4 @@ exports.updateCondidat = updateCondidat;
 exports.deletecondidat = deletecondidat;
 exports.getCondidatByOffreId = getCondidatByOffreId;
 exports.postulerOffre = postulerOffre;
+exports.convocationEntretient = convocationEntretient;
