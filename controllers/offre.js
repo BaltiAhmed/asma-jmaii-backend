@@ -143,7 +143,7 @@ const deleteOffre = async (req, res, next) => {
 
 const getOffreByUserId = async (req, res, next) => {
   const id = req.params.id;
-
+console.log(id)
   let existingOffre;
   try {
     existingOffre = await entreprise.findById(id).populate('offres');
