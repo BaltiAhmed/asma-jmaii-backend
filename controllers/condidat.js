@@ -60,7 +60,7 @@ const signup = async (req, res, next) => {
   }
 
   let mailOptions = {
-    from: "asmajamai1994@gmail.com", // TODO: email sender
+    from: "jmaiiasma2021@gmail.com", // TODO: email sender
     to: email, // TODO: email receiver
     subject: "Confirmation de creation de compte",
     text: "Votre mot de passe est " + password,
