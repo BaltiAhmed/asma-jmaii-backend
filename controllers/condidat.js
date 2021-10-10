@@ -14,8 +14,8 @@ const log = console.log;
 let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL || "darragino1@gmail.com", // TODO: your gmail account
-    pass: process.env.PASSWORD || "", // TODO: your gmail password
+    user: process.env.EMAIL || "jmaiiasma2021@gmail.com", // TODO: your gmail account
+    pass: process.env.PASSWORD || "asma2021", // TODO: your gmail password
   },
 });
 
@@ -306,7 +306,7 @@ const convocationEntretient = async (req, res, next) => {
   console.log(existingEntreprise.nom_entreprise);
 
   let mailOptions = {
-    from: "asmajamai1994@gmail.com", // TODO: email sender
+    from: "jmaiiasma2021@gmail.com", // TODO: email sender
     to: existingUser.email, // TODO: email receiver
     subject: "Convocation pour entretient",
     text:
