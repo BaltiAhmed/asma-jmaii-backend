@@ -22,5 +22,6 @@ check('password')
 .isLength({min:8})
 ,adminControllers.login)
 
+route.get('/',adminControllers.getAdmin)
 
 module.exports = route

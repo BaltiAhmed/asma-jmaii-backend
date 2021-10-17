@@ -7,7 +7,6 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
 const signup = async (req, res, next) => {
-  
   const {
     nom,
     nom_entreprise,
@@ -126,10 +125,10 @@ const getEntrepriseById = async (req, res, next) => {
   res.json({ entreprise: existingUser });
 };
 const updateEntreprise = async (req, res, next) => {
-  const error = validationResult(req);
+  /* const error = validationResult(req);
   if (!error.isEmpty()) {
     return next(new httpError("invalid input passed ", 422));
-  }
+  } */
 
   const {
     nom,
@@ -142,7 +141,7 @@ const updateEntreprise = async (req, res, next) => {
     email,
     password,
   } = req.body;
-  const UserId = req.params.userId;
+  const UserId = req.params.id;
   let existingUser;
   try {
     existingUser = await entreprise.findById(UserId);
@@ -160,6 +159,7 @@ const updateEntreprise = async (req, res, next) => {
   existingUser.email = email;
   existingUser.password = password;
   existingUser.tel = tel;
+  existingUser.image = req.file.path;
 
   try {
     existingUser.save();

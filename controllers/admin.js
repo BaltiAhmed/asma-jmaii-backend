@@ -92,5 +92,19 @@ const login = async (req, res, next) => {
     }
     res.status(200).json({ admin: existingUser, token: token });
 };
+
+const getAdmin = async (req, res, next) => {
+  let existingUser;
+  try {
+    existingUser = await admin.find();
+  } catch {
+    const error = new httpError("failed signup try again later", 500);
+    return next(error);
+  }
+  res.json({ admin: existingUser });
+};
+
+
 exports.signup = signup
 exports.login = login
+exports.getAdmin = getAdmin
