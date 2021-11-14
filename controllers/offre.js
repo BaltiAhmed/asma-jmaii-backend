@@ -16,6 +16,8 @@ const ajoutOffre = async (req, res, next) => {
     Ddebut,
     Dfin,
     mission,
+    categorie,
+    photo,
     Aprincipale,
     description,
     entrepriseId,
@@ -27,6 +29,8 @@ const ajoutOffre = async (req, res, next) => {
     Ddebut,
     Dfin,
     mission,
+    categorie,
+    photo,
     Aprincipale,
     description,
     condidats: [],
@@ -88,6 +92,7 @@ const updateOffre = async (req, res, next) => {
     Ddebut,
     Dfin,
     mission,
+    categorie,
     Aprincipale,
     description,
     entrepriseId,
@@ -106,6 +111,7 @@ const updateOffre = async (req, res, next) => {
   existingoffre.Ddebut = Ddebut;
   existingoffre.Dfin = Dfin;
   existingoffre.mission = mission;
+  existingoffre.categorie = categorie;
   existingoffre.Aprincipale = Aprincipale;
   existingoffre.description = description;
 

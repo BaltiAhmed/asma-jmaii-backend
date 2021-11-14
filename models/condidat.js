@@ -7,6 +7,7 @@ const condidatSchema = new schema({
   dateNaissance: { type: String },
   sexe: { type: String },
   age: { type: String },
+  
   photo: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minlenght: 8 },

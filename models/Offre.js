@@ -7,6 +7,8 @@ const OffreSchema = new schema({
     Ddebut:{type:String,required:true},
     Dfin:{type:String,required:true},
     mission:{type:String,required:true},
+    categorie: { type: String },
+    photo: { type: String },
     Aprincipale:{type:String,required:true},
     description:{type:String,required:true},
     condidats:[{type:mongoose.Types.ObjectId,required:true,ref:'condidat'}]
